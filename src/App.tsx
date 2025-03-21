@@ -7,6 +7,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from "./pages/Index";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
+import Financeiro from "./pages/Financeiro";
 
 const queryClient = new QueryClient();
 
@@ -25,6 +26,10 @@ const App = () => {
             <Route 
               path="/" 
               element={isAuthenticated ? <Index /> : <Navigate to="/login" replace />} 
+            />
+            <Route
+              path="/financeiro"
+              element={isAuthenticated ? <Financeiro /> : <Navigate to="/login" replace />}
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

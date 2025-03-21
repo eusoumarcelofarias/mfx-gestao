@@ -28,13 +28,18 @@ const Login = () => {
 
     setIsLoading(true);
     
-    // Simulação de login
+    // Simulação de login - em um projeto real, conectaria a um backend
     setTimeout(() => {
+      // Definir o usuário como autenticado no localStorage
+      localStorage.setItem("isAuthenticated", "true");
+      
       setIsLoading(false);
       toast({
         title: "Login bem-sucedido",
         description: "Você será redirecionado para o dashboard.",
       });
+      
+      // Redirecionar para a página inicial
       navigate('/');
     }, 1500);
   };

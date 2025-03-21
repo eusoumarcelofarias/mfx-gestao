@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { toast } from '@/components/ui/use-toast';
-import { SidebarTrigger } from '@/components/ui/sidebar';
+import { useSidebar } from '@/components/ui/sidebar';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
+  const { toggleSidebar } = useSidebar();
   const [scrolled, setScrolled] = useState(false);
   const [currentTime, setCurrentTime] = useState(new Date());
 
@@ -58,7 +59,11 @@ const Header: React.FC = () => {
     >
       <div className="flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-4">
-          <SidebarTrigger className="md:hidden" />
+          {isMobile && (
+            <Button variant="ghost" size="icon" onClick={toggleSidebar} className="md:hidden">
+              <Search className="h-5 w-5" />
+            </Button>
+          )}
           
           <div className="flex flex-col">
             <h2 className="text-lg font-medium">Sistema Solar Financeiro</h2>

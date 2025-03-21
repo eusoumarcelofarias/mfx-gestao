@@ -9,6 +9,7 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
 import Financeiro from "./pages/Financeiro";
+import Vendas from "./pages/Vendas";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +32,10 @@ const App = () => {
             <Route
               path="/financeiro"
               element={isAuthenticated ? <Layout><Financeiro /></Layout> : <Navigate to="/login" replace />}
+            />
+            <Route
+              path="/vendas"
+              element={isAuthenticated ? <Layout><Vendas /></Layout> : <Navigate to="/login" replace />}
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

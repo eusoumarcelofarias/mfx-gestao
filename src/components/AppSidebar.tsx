@@ -11,7 +11,8 @@ import {
   Bell, 
   Globe, 
   Settings, 
-  LogOut
+  LogOut,
+  ChevronLeft
 } from 'lucide-react';
 import {
   Sidebar,
@@ -24,11 +25,14 @@ import {
   SidebarGroup,
   SidebarGroupLabel,
   SidebarGroupContent,
+  useSidebar
 } from '@/components/ui/sidebar';
 import { toast } from '@/components/ui/use-toast';
+import { Button } from '@/components/ui/button';
 
 const AppSidebar = () => {
   const location = useLocation();
+  const { toggleSidebar, state } = useSidebar();
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
@@ -110,7 +114,18 @@ const AppSidebar = () => {
   return (
     <Sidebar>
       <SidebarHeader className="flex h-16 items-center border-b px-4">
-        <h2 className="text-lg font-semibold">SSF</h2>
+        <div className="flex w-full justify-between items-center">
+          <h2 className="text-lg font-semibold">SSF</h2>
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            onClick={toggleSidebar} 
+            className="h-8 w-8"
+            aria-label={state === "expanded" ? "Minimizar menu" : "Expandir menu"}
+          >
+            <ChevronLeft className={`h-4 w-4 transition-transform ${state === "collapsed" ? "rotate-180" : ""}`} />
+          </Button>
+        </div>
       </SidebarHeader>
       
       <SidebarContent>

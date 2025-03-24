@@ -35,11 +35,14 @@ const AppSidebar = () => {
   const location = useLocation();
   const { toggleSidebar, state } = useSidebar();
   
-  // Mock super admin check - in a real app, this would come from authentication
-  const isSuperAdmin = true;
+  // Get user role from localStorage
+  const userRole = localStorage.getItem("userRole");
+  const isSuperAdmin = userRole === "superadmin";
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userEmail");
     toast({
       title: "Logout efetuado",
       description: "Você foi desconectado do sistema.",
@@ -48,12 +51,13 @@ const AppSidebar = () => {
     window.location.href = '/login';
   };
 
-  const menuItems = [
+  // Menu items for regular clients
+  const clientMenuItems = [
     { 
       title: 'Dashboard', 
-      url: '/',
+      url: '/dashboard',
       icon: LayoutDashboard,
-      isActive: location.pathname === '/',
+      isActive: location.pathname === '/dashboard',
     },
     { 
       title: 'Financeiro', 
@@ -90,24 +94,51 @@ const AppSidebar = () => {
       url: '/notificacoes',
       icon: Bell,
       isActive: location.pathname.startsWith('/notificacoes'),
-    },
-    { 
-      title: 'Webhooks', 
-      url: '/webhooks',
-      icon: Globe,
-      isActive: location.pathname.startsWith('/webhooks'),
     }
   ];
 
-  // Only add Admin option for super admins
-  if (isSuperAdmin) {
-    menuItems.unshift({ 
+  // Menu items for super admin
+  const adminMenuItems = [
+    { 
       title: 'Admin', 
       url: '/admin',
       icon: Building2,
       isActive: location.pathname.startsWith('/admin'),
-    });
-  }
+    },
+    { 
+      title: 'Empresas', 
+      url: '/admin?tab=empresas',
+      icon: Building2,
+      isActive: location.pathname.startsWith('/admin') && location.search.includes('tab=empresas'),
+    },
+    { 
+      title: 'Usuários', 
+      url: '/admin?tab=usuarios',
+      icon: Users,
+      isActive: location.pathname.startsWith('/admin') && location.search.includes('tab=usuarios'),
+    },
+    { 
+      title: 'Planos', 
+      url: '/admin?tab=planos',
+      icon: CircleDollarSign,
+      isActive: location.pathname.startsWith('/admin') && location.search.includes('tab=planos'),
+    },
+    { 
+      title: 'Relatórios', 
+      url: '/admin?tab=relatorios',
+      icon: BarChart3,
+      isActive: location.pathname.startsWith('/admin') && location.search.includes('tab=relatorios'),
+    },
+    { 
+      title: 'Integrações', 
+      url: '/admin?tab=integracoes',
+      icon: Globe,
+      isActive: location.pathname.startsWith('/admin') && location.search.includes('tab=integracoes'),
+    }
+  ];
+
+  // Choose menu items based on user role
+  const menuItems = isSuperAdmin ? adminMenuItems : clientMenuItems;
 
   const settingsItems = [
     { 
@@ -144,7 +175,7 @@ const AppSidebar = () => {
       
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Menu Principal</SidebarGroupLabel>
+          <SidebarGroupLabel>{isSuperAdmin ? 'Administração' : 'Menu Principal'}</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (

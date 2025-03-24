@@ -12,12 +12,15 @@ import NotFound from "./pages/NotFound";
 import Financeiro from "./pages/Financeiro";
 import Vendas from "./pages/Vendas";
 import SuperAdmin from "./pages/SuperAdmin";
+import ClientDashboard from "./pages/ClientDashboard";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   // Verificação básica se o usuário está autenticado (em produção, use um sistema de autenticação real)
   const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+  const userRole = localStorage.getItem("userRole");
+  const isSuperAdmin = userRole === "superadmin";
   
   return (
     <QueryClientProvider client={queryClient}>
@@ -33,6 +36,10 @@ const App = () => {
                 element={isAuthenticated ? <Layout><Index /></Layout> : <Navigate to="/login" replace />} 
               />
               <Route
+                path="/dashboard"
+                element={isAuthenticated ? <Layout><ClientDashboard /></Layout> : <Navigate to="/login" replace />}
+              />
+              <Route
                 path="/financeiro"
                 element={isAuthenticated ? <Layout><Financeiro /></Layout> : <Navigate to="/login" replace />}
               />
@@ -42,7 +49,7 @@ const App = () => {
               />
               <Route
                 path="/admin"
-                element={isAuthenticated ? <Layout><SuperAdmin /></Layout> : <Navigate to="/login" replace />}
+                element={isAuthenticated && isSuperAdmin ? <Layout><SuperAdmin /></Layout> : <Navigate to={isAuthenticated ? "/dashboard" : "/login"} replace />}
               />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

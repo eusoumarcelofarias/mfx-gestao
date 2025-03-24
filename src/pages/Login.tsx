@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Eye, EyeOff, LockKeyhole, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,6 +14,16 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+
+  // Check if user is already authenticated and redirect them
+  useEffect(() => {
+    const isAuthenticated = localStorage.getItem("isAuthenticated") === "true";
+    if (isAuthenticated) {
+      // Check if user is superadmin - in a real app, this would be a role check
+      const isSuperAdmin = email.includes("admin") || localStorage.getItem("userRole") === "superadmin";
+      navigate(isSuperAdmin ? '/admin' : '/dashboard');
+    }
+  }, [navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,14 +43,19 @@ const Login = () => {
       // Definir o usuário como autenticado no localStorage
       localStorage.setItem("isAuthenticated", "true");
       
+      // Simular distinção entre superadmin e usuário comum
+      const isSuperAdmin = email.includes("admin");
+      localStorage.setItem("userRole", isSuperAdmin ? "superadmin" : "client");
+      localStorage.setItem("userEmail", email);
+      
       setIsLoading(false);
       toast({
         title: "Login bem-sucedido",
         description: "Você será redirecionado para o dashboard.",
       });
       
-      // Redirecionar para a página inicial
-      navigate('/');
+      // Redirecionar para a página apropriada baseado no tipo de usuário
+      navigate(isSuperAdmin ? '/admin' : '/dashboard');
     }, 1500);
   };
 

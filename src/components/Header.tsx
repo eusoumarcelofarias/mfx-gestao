@@ -7,6 +7,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { toast } from '@/components/ui/use-toast';
 import { useSidebar } from '@/components/ui/sidebar';
+import ThemeToggle from '@/components/ThemeToggle';
 
 const Header: React.FC = () => {
   const isMobile = useIsMobile();
@@ -82,6 +83,8 @@ const Header: React.FC = () => {
               className="pl-9 py-2 text-sm rounded-full w-full bg-secondary border-none focus:ring-1 focus:ring-primary/40 transition-all"
             />
           </div>
+          
+          <ThemeToggle />
           
           <Button 
             variant="ghost" 

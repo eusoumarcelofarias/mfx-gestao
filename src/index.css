@@ -98,7 +98,7 @@
   }
 
   .glass-effect {
-    @apply bg-white/80 backdrop-blur-lg;
+    @apply bg-white/80 dark:bg-black/40 backdrop-blur-lg;
   }
 
   .card-transition {
@@ -152,10 +152,9 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c1c1c1;
-  border-radius: 3px;
+  @apply bg-muted-foreground/30 hover:bg-muted-foreground/50 rounded;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a8a8a8;
+  @apply bg-muted-foreground/50;
 }

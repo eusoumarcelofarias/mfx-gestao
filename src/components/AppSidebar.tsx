@@ -12,7 +12,8 @@ import {
   Globe, 
   Settings, 
   LogOut,
-  ChevronLeft
+  ChevronLeft,
+  Building2
 } from 'lucide-react';
 import {
   Sidebar,
@@ -33,6 +34,9 @@ import { Button } from '@/components/ui/button';
 const AppSidebar = () => {
   const location = useLocation();
   const { toggleSidebar, state } = useSidebar();
+  
+  // Mock super admin check - in a real app, this would come from authentication
+  const isSuperAdmin = true;
 
   const handleLogout = () => {
     localStorage.removeItem("isAuthenticated");
@@ -94,6 +98,16 @@ const AppSidebar = () => {
       isActive: location.pathname.startsWith('/webhooks'),
     }
   ];
+
+  // Only add Admin option for super admins
+  if (isSuperAdmin) {
+    menuItems.unshift({ 
+      title: 'Admin', 
+      url: '/admin',
+      icon: Building2,
+      isActive: location.pathname.startsWith('/admin'),
+    });
+  }
 
   const settingsItems = [
     { 
